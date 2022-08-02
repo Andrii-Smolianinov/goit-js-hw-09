@@ -1,17 +1,45 @@
-daysEl = document.querySelector('[data-days]');
-hoursEl = document.querySelector('[data-hours]');
-minutesEl = document.querySelector('[data-minutes]');
-secondsEl = document.querySelector('[data-seconds]');
-startEl = document.querySelector('[data-start]')
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 
-startEl.addEventListener('click', () => {
-    setInterval(timer, 1000)
+const daysEl = document.querySelector('[data-days]');
+const hoursEl = document.querySelector('[data-hours]');
+const minutesEl = document.querySelector('[data-minutes]');
+const secondsEl = document.querySelector('[data-seconds]');
+const startButtonEl = document.querySelector('[data-start]');
+const selectorEl = document.querySelector('#datetime-picker')
+const currentData = new Date();
+let futureData = 0;
+
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: currentData,
+  minuteIncrement: 1,
+  onClose,
+};
+flatpickr(selectorEl, options);
+
+function onClose(selectedDates) {
+  if (currentData > selectedDates[0]) {
+    Notiflix.Notify.failure('Будь-ласка, виберіть дату з майбутнього');
+  }
+  if (currentData < selectedDates[0]) {
+    futureData = selectedDates[0];
+    removeDisable();
+  }
+}
+function removeDisable() {
+  startButtonEl.removeAttribute('disabled');
+}
+
+startButtonEl.addEventListener('click', () => {
+  setInterval(timer, 1000);
 });
 
 function timer() {
-  const todayData = Date.now();
-  const futureData = new Date();
-  const differenceData = futureData - todayData;
+  let today = new Date();
+  const differenceData = futureData - today;
   const formatingMilSec = differenceData / 1000;
 
   const seconds = Math.floor(formatingMilSec) % 60;
@@ -24,4 +52,3 @@ function timer() {
   minutesEl.textContent = minutes < 10 ? `0${minutes}` : minutes;
   secondsEl.textContent = seconds < 10 ? `0${seconds}` : seconds;
 }
-
