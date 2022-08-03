@@ -32,13 +32,22 @@ function onClose(selectedDates) {
   }
 }
 
-startButtonEl.addEventListener('click', () => {
-  setInterval(timer, 1000);
+startButtonEl.addEventListener('click', onBtnClick);
+
+function onBtnClick() {
   startButtonEl.disabled = true;
   selectorEl.disabled = true;
-});
+  setInterval(() => {
+    const currentTime = Date.now();
+    const deltaTime = futureData - currentTime;
+    if (deltaTime <= 0) {
+      return;
+    }
+    converterTime();
+  }, 1000);
+}
 
-function timer() {  
+function converterTime() {
   let today = new Date();
   const differenceData = futureData - today;
   const formatingMilSec = differenceData / 1000;
@@ -52,3 +61,10 @@ function timer() {
   minutesEl.textContent = minutes < 10 ? `0${minutes}` : minutes;
   secondsEl.textContent = seconds < 10 ? `0${seconds}` : seconds;
 }
+
+
+
+
+
+
+
