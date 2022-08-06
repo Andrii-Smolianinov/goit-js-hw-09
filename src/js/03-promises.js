@@ -11,7 +11,7 @@ function onSubmitForm(e) {
   const delay = delayEl.value;
   const step = stepEl.value;
   for (let i = 1; i <= amount; i += 1) {
-    setTimeout(() => {
+    
       const position = i;
       const newDelay = (i - 1) * step + +delay;
       createPromise(position, newDelay)
@@ -21,7 +21,7 @@ function onSubmitForm(e) {
         .catch(error => {
           Notiflix.Notify.failure(`${error}`);
         });
-    }, i * step);
+    
   }
   e.target.reset();
 }

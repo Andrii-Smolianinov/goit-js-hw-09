@@ -37,11 +37,11 @@ startButtonEl.addEventListener('click', onBtnClick);
 function onBtnClick() {
   startButtonEl.disabled = true;
   selectorEl.disabled = true;
-  setInterval(() => {
+  const interval = setInterval(() => {
     const currentTime = Date.now();
     const deltaTime = futureData - currentTime;
     if (deltaTime <= 0) {
-      return;
+      clearInterval(interval);
     }
     converterTime();
   }, 1000);
@@ -61,10 +61,3 @@ function converterTime() {
   minutesEl.textContent = minutes < 10 ? `0${minutes}` : minutes;
   secondsEl.textContent = seconds < 10 ? `0${seconds}` : seconds;
 }
-
-
-
-
-
-
-
